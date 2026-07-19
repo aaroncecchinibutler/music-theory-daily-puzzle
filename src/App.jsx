@@ -86,8 +86,10 @@ export default function App() {
   const size = puzzle.rowChords.length
 
   function isFilled(key) {
-    if (inputMode === 'text') return !!guesses[key]?.trim()
-    return guesses[key] !== undefined
+    const v = guesses[key]
+    if (v === undefined || v === null) return false
+    if (inputMode === 'text') return typeof v === 'string' ? !!v.trim() : true
+    return true
   }
 
   const allFilled = puzzle.rowChords.every((_, r) =>
@@ -150,7 +152,9 @@ export default function App() {
     const correct = puzzle.solution[r][c]
     if (inputMode === 'text') {
       const raw = guesses[key]
-      if (!raw?.trim()) return 'empty'
+      if (!raw && raw !== 0) return 'empty'
+      if (typeof raw === 'number') return raw === correct ? 'correct' : 'incorrect'
+      if (!raw.trim()) return 'empty'
       const pc = parseNote(raw)
       if (pc === null) return 'invalid'
       return pc === correct ? 'correct' : 'incorrect'
@@ -251,10 +255,10 @@ export default function App() {
                 />
               : <span className="cell-note">
                   {status === 'incorrect'
-                    ? <><s className="wrong-guess">{value.trim()}</s><span className="reveal-answer">{pitchName(puzzle.solution[r][c])}</span></>
+                    ? <><s className="wrong-guess">{typeof value === 'string' ? value.trim() : pitchName(value)}</s><span className="reveal-answer">{pitchName(puzzle.solution[r][c])}</span></>
                     : status === 'empty' || status === 'invalid'
                       ? <span className="reveal-answer">{pitchName(puzzle.solution[r][c])}</span>
-                      : value.trim()
+                      : typeof value === 'string' ? value.trim() : pitchName(value)
                   }
                 </span>
             }
