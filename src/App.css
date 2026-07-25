@@ -76,19 +76,51 @@ header h1 {
   flex-wrap: wrap;
 }
 
-/* Mode toggle */
-.mode-toggle {
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 1.5px solid var(--border);
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 0.85rem;
+/* Mode toggle switch */
+.mode-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
+  user-select: none;
 }
-.mode-toggle:hover { border-color: var(--accent); color: var(--text); }
+
+.mode-switch-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.switch-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.switch-track.on {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+}
+
+.switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.switch-thumb.on {
+  transform: translateX(18px);
+  background: var(--accent);
+}
 
 /* Difficulty tabs */
 .difficulty-tabs {

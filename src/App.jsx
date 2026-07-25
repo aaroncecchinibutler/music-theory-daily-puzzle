@@ -348,9 +348,12 @@ export default function App() {
             </button>
           ))}
         </div>
-        <button className="mode-toggle" onClick={toggleMode} title="Toggle input mode">
-          {inputMode === 'text' ? '𝄞 Staff' : 'Aa Text'}
-        </button>
+        <label className="mode-switch" title="Toggle input mode">
+          <span className="mode-switch-label">𝄞 Staff</span>
+          <span className={`switch-track ${inputMode === 'staff' ? 'on' : ''}`} onClick={toggleMode}>
+            <span className={`switch-thumb ${inputMode === 'staff' ? 'on' : ''}`} />
+          </span>
+        </label>
       </div>
 
       <p className="instructions">
