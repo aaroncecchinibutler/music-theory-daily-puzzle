@@ -4,7 +4,7 @@ import { chordLabel, pitchName } from './musicTheory.js'
 import { StaffNote, chromaticToPc, B4_INDEX } from './StaffNote.jsx'
 import './App.css'
 
-const DIFFICULTIES = ['easy', 'medium', 'hard']
+const DIFFICULTIES = ['easy', 'hard']
 
 const NOTE_MAP = {
   'c': 0, 'b#': 0,
@@ -40,6 +40,11 @@ function loadState(date, difficulty) {
 
 export default function App() {
   const [difficulty, setDifficulty] = useState('easy')
+  const [lightMode, setLightMode] = useState(false)
+
+  useEffect(() => {
+    document.body.setAttribute('data-theme', lightMode ? 'light' : 'dark')
+  }, [lightMode])
   const [puzzle, setPuzzle] = useState(null)
   const [inputMode, setInputMode] = useState('text') // 'text' | 'staff'
   // text mode: guesses[key] = raw string
@@ -348,6 +353,12 @@ export default function App() {
             </button>
           ))}
         </div>
+        <label className="mode-switch" title="Toggle light mode">
+          <span className="mode-switch-label">☀️</span>
+          <span className={`switch-track ${lightMode ? 'on' : ''}`} onClick={() => setLightMode(m => !m)}>
+            <span className={`switch-thumb ${lightMode ? 'on' : ''}`} />
+          </span>
+        </label>
         <label className="mode-switch" title="Toggle input mode">
           <span className="mode-switch-label">𝄞 Staff</span>
           <span className={`switch-track ${inputMode === 'staff' ? 'on' : ''}`} onClick={toggleMode}>

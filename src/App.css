@@ -14,11 +14,24 @@
   --gap: 6px;
 }
 
+[data-theme="light"] {
+  --bg: #ebebf2;
+  --surface: #f8f8fc;
+  --surface2: #ffffff;
+  --border: #d0d0de;
+  --accent: #5a4de6;
+  --accent-dim: #c5c0f5;
+  --text: #18181f;
+  --text-muted: #6b6b80;
+  --correct: #2e8f60;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Inter', system-ui, sans-serif;
   min-height: 100vh;
+  transition: background 0.2s, color 0.2s;
 }
 
 .app {
