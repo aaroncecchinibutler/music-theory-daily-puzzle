@@ -426,6 +426,15 @@ export default function App() {
           : 'Click a cell to select it. Use ↑ ↓ to change the note by half step.'}
       </p>
 
+      <details className="how-to-play">
+        <summary>How to Play</summary>
+        <ol>
+          <li>Each cell must contain a note that belongs to <strong>both</strong> its row chord and its column chord.</li>
+          <li>Every note in a chord must appear <strong>exactly once</strong> across its row (or column) — no repeats, no omissions.</li>
+          <li>Notes are enharmonically equivalent — C# and D♭ are the same note.</li>
+        </ol>
+      </details>
+
       <div
         className="grid"
         style={{ gridTemplateColumns: `minmax(110px,auto) repeat(${size}, 1fr)` }}

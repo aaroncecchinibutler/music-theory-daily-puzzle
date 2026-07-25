@@ -186,6 +186,44 @@ header h1 {
   line-height: 1.5;
 }
 
+/* How to Play */
+.how-to-play {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.how-to-play summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+.how-to-play summary::before {
+  content: '▸';
+  font-size: 0.7rem;
+  transition: transform 0.15s;
+}
+
+.how-to-play[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.how-to-play ol {
+  margin: 10px 0 4px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  line-height: 1.5;
+}
+
 /* Grid */
 .grid {
   display: grid;
