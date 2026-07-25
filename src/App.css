@@ -46,6 +46,27 @@ header h1 {
   margin-top: 4px;
 }
 
+.timer {
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.stars {
+  font-size: 1.8rem;
+  letter-spacing: 0.1em;
+  color: #f5c518;
+  margin-top: 4px;
+}
+
+.time-result {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Top controls row */
 .top-controls {
   display: flex;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { generatePuzzle } from './puzzleEngine.js'
 import { chordLabel, pitchName } from './musicTheory.js'
 import { StaffNote, chromaticToPc, B4_INDEX } from './StaffNote.jsx'
@@ -51,9 +51,23 @@ export default function App() {
   const [staffDirections, setStaffDirections] = useState({})
   const [checked, setChecked] = useState(false)
   const [selected, setSelected] = useState(null)
+  const [elapsed, setElapsed] = useState(0)
+  const [timerStarted, setTimerStarted] = useState(false)
+  const startTimeRef = useRef(null)
+  const timerRef = useRef(null)
   const textInputRef = useRef(null)
   const staffCellRef = useRef(null)
   const date = todayStr()
+
+  function startTimerIfNeeded() {
+    if (startTimeRef.current === null && !checked) {
+      startTimeRef.current = Date.now()
+      setTimerStarted(true)
+      timerRef.current = setInterval(() => {
+        setElapsed(Math.floor((Date.now() - startTimeRef.current) / 1000))
+      }, 1000)
+    }
+  }
 
   useEffect(() => {
     const p = generatePuzzle(date, difficulty)
@@ -69,6 +83,10 @@ export default function App() {
       setChecked(false)
     }
     setSelected(null)
+    setElapsed(0)
+    setTimerStarted(false)
+    startTimeRef.current = null
+    clearInterval(timerRef.current)
   }, [difficulty])
 
   useEffect(() => {
@@ -137,6 +155,7 @@ export default function App() {
 
   function handleCellClick(key) {
     if (checked) return
+    startTimerIfNeeded()
     setSelected(key)
     // In staff mode, clicking a cell initialises it to B if not yet set
     if (inputMode === 'staff' && guesses[key] === undefined) {
@@ -163,6 +182,20 @@ export default function App() {
       if (pc === undefined) return 'empty'
       return pc === correct ? 'correct' : 'incorrect'
     }
+  }
+
+  function starsForTime(seconds) {
+    if (seconds < 60)  return 5
+    if (seconds < 120) return 4
+    if (seconds < 180) return 3
+    if (seconds < 240) return 2
+    return 1
+  }
+
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60)
+    const s = seconds % 60
+    return `${m}:${s.toString().padStart(2, '0')}`
   }
 
   const score = checked
@@ -302,6 +335,9 @@ export default function App() {
       <header>
         <h1>Music Theory Daily Puzzle</h1>
         <p className="date">{date}</p>
+        {timerStarted && (
+          <p className="timer">{formatTime(elapsed)}</p>
+        )}
       </header>
 
       <div className="top-controls">
@@ -332,19 +368,25 @@ export default function App() {
 
       <div className="controls">
         {!checked && (
-          <button className="btn-primary" onClick={() => setChecked(true)} disabled={!allFilled}>
+          <button className="btn-primary" onClick={() => { clearInterval(timerRef.current); setChecked(true) }} disabled={!allFilled}>
             {allFilled ? 'Check Answers' : `Fill all ${size * size} cells to check`}
           </button>
         )}
         {checked && (
           <>
             <p className="score">{score} / {size * size} correct</p>
+            <p className="stars">{'★'.repeat(starsForTime(elapsed))}{'☆'.repeat(5 - starsForTime(elapsed))}</p>
+            <p className="time-result">{formatTime(elapsed)}</p>
             <button className="btn-ghost" onClick={() => {
               setChecked(false)
               setGuesses({})
               setStaffIdxs({})
               setStaffDirections({})
               setSelected(null)
+              setElapsed(0)
+              setTimerStarted(false)
+              startTimeRef.current = null
+              clearInterval(timerRef.current)
             }}>
               Try Again
             </button>
