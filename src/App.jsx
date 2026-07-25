@@ -338,14 +338,13 @@ export default function App() {
 
   return (
     <div className="app">
-      <button
-        className={`theme-toggle ${lightMode ? 'light' : 'dark'}`}
-        onClick={() => setLightMode(m => !m)}
-        title="Toggle light/dark mode"
-        aria-label="Toggle light/dark mode"
-      >
-        {lightMode ? '🌙' : '☀️'}
-      </button>
+      <label className="theme-toggle" title="Toggle light/dark mode">
+        <span className="theme-toggle-icon">☀️</span>
+        <span className={`switch-track ${lightMode ? 'on' : ''}`} onClick={() => setLightMode(m => !m)}>
+          <span className={`switch-thumb ${lightMode ? 'on' : ''}`} />
+        </span>
+        <span className="theme-toggle-icon">🌙</span>
+      </label>
       <header>
         <h1>Music Theory Daily Puzzle</h1>
         <p className="date">{date}</p>

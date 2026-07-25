@@ -85,20 +85,18 @@ header h1 {
   position: fixed;
   top: 14px;
   right: 16px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1.5px solid var(--border);
-  background: var(--surface2);
-  font-size: 1.1rem;
-  cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: background 0.15s, border-color 0.15s;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
   z-index: 100;
 }
-.theme-toggle:hover { border-color: var(--accent); background: var(--surface); }
+
+.theme-toggle-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
 
 /* Top controls row */
 .top-controls {
