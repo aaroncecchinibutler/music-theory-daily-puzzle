@@ -38,7 +38,23 @@ function loadState(date, difficulty) {
   catch { return null }
 }
 
-function ShareButton({ score, total, elapsed, stars, difficulty, date }) {
+function loadStreak() {
+  try { return JSON.parse(localStorage.getItem('mtdp-streak')) ?? { count: 0, lastDate: null } }
+  catch { return { count: 0, lastDate: null } }
+}
+
+function updateStreak(today) {
+  const { count, lastDate } = loadStreak()
+  if (lastDate === today) return count
+  const yesterday = new Date(today)
+  yesterday.setDate(yesterday.getDate() - 1)
+  const yStr = yesterday.toISOString().slice(0, 10)
+  const newCount = lastDate === yStr ? count + 1 : 1
+  localStorage.setItem('mtdp-streak', JSON.stringify({ count: newCount, lastDate: today }))
+  return newCount
+}
+
+function ShareButton({ score, total, elapsed, stars, difficulty, date, streak }) {
   const [copied, setCopied] = useState(false)
 
   function buildShareText() {
@@ -52,9 +68,10 @@ function ShareButton({ score, total, elapsed, stars, difficulty, date }) {
       ``,
       `${score}/${total} correct · ${timeStr}`,
       starStr,
+      streak > 1 ? `🔥 ${streak} day streak` : '',
       ``,
       `music-theory-daily-puzzle.vercel.app`,
-    ].join('\n')
+    ].filter(l => l !== '' || l === '').join('\n').replace(/\n{3,}/g, '\n\n')
   }
 
   async function handleShare() {
@@ -106,6 +123,7 @@ export default function App() {
   const [staffDirections, setStaffDirections] = useState({})
   const [checked, setChecked] = useState(false)
   const [showModal, setShowModal] = useState(false)
+  const [streak, setStreak] = useState(() => loadStreak().count)
   const [selected, setSelected] = useState(null)
   const [elapsed, setElapsed] = useState(0)
   const [timerStarted, setTimerStarted] = useState(false)
@@ -448,7 +466,8 @@ export default function App() {
             <p className="modal-stars">{'★'.repeat(starsForTime(elapsed, size * size - score))}{'☆'.repeat(5 - starsForTime(elapsed, size * size - score))}</p>
             <p className="modal-score">{score} / {size * size} correct</p>
             <p className="modal-time">{formatTime(elapsed)}</p>
-            <ShareButton score={score} total={size * size} elapsed={elapsed} stars={starsForTime(elapsed, size * size - score)} difficulty={difficulty} date={date} />
+            {streak > 0 && <p className="modal-streak">🔥 {streak} day streak</p>}
+            <ShareButton score={score} total={size * size} elapsed={elapsed} stars={starsForTime(elapsed, size * size - score)} difficulty={difficulty} date={date} streak={streak} />
             <button className="btn-ghost" onClick={() => setShowModal(false)}>Done</button>
           </div>
         </div>
@@ -456,7 +475,7 @@ export default function App() {
 
       <div className="controls">
         {!checked && (
-          <button className="btn-primary" onClick={() => { clearInterval(timerRef.current); setChecked(true); setShowModal(true) }} disabled={!allFilled}>
+          <button className="btn-primary" onClick={() => { clearInterval(timerRef.current); setChecked(true); setShowModal(true); setStreak(updateStreak(date)) }} disabled={!allFilled}>
             {allFilled ? 'Check Answers' : `Fill all ${size * size} cells to check`}
           </button>
         )}

@@ -440,6 +440,13 @@ header h1 {
   margin-bottom: 4px;
 }
 
+.modal-streak {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+}
+
 .loading {
   display: flex;
   align-items: center;
