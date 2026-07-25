@@ -1,28 +1,28 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #0f0f13;
-  --surface: #1a1a22;
-  --surface2: #22222e;
-  --border: #2e2e3e;
-  --accent: #7c6dfa;
-  --accent-dim: #4a3fa0;
-  --text: #e8e8f0;
-  --text-muted: #888898;
+  --bg: #0a0a0a;
+  --surface: #161616;
+  --surface2: #1f1f1f;
+  --border: #333333;
+  --accent: #ffffff;
+  --accent-dim: #444444;
+  --text: #f0f0f0;
+  --text-muted: #777777;
   --correct: #4caf82;
   --radius: 10px;
   --gap: 6px;
 }
 
 [data-theme="light"] {
-  --bg: #ebebf2;
-  --surface: #f8f8fc;
-  --surface2: #ffffff;
-  --border: #d0d0de;
-  --accent: #5a4de6;
-  --accent-dim: #c5c0f5;
-  --text: #18181f;
-  --text-muted: #6b6b80;
+  --bg: #f0f0f0;
+  --surface: #ffffff;
+  --surface2: #e8e8e8;
+  --border: #cccccc;
+  --accent: #000000;
+  --accent-dim: #aaaaaa;
+  --text: #0a0a0a;
+  --text-muted: #666666;
   --correct: #2e8f60;
 }
 
@@ -175,7 +175,7 @@ header h1 {
 .tab.active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--bg);
   font-weight: 600;
 }
 
@@ -314,7 +314,7 @@ header h1 {
 .btn-primary {
   padding: 10px 32px;
   background: var(--accent);
-  color: #fff;
+  color: var(--bg);
   border: none;
   border-radius: 999px;
   font-size: 0.95rem;
@@ -347,7 +347,7 @@ header h1 {
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
-.btn-share:hover { background: var(--accent); color: #fff; }
+.btn-share:hover { background: var(--accent); color: var(--bg); }
 
 .score {
   font-size: 1.1rem;
