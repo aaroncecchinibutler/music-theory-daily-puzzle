@@ -338,6 +338,14 @@ export default function App() {
 
   return (
     <div className="app">
+      <button
+        className={`theme-toggle ${lightMode ? 'light' : 'dark'}`}
+        onClick={() => setLightMode(m => !m)}
+        title="Toggle light/dark mode"
+        aria-label="Toggle light/dark mode"
+      >
+        {lightMode ? '🌙' : '☀️'}
+      </button>
       <header>
         <h1>Music Theory Daily Puzzle</h1>
         <p className="date">{date}</p>
@@ -354,12 +362,6 @@ export default function App() {
             </button>
           ))}
         </div>
-        <label className="mode-switch" title="Toggle light mode">
-          <span className="mode-switch-label">☀️</span>
-          <span className={`switch-track ${lightMode ? 'on' : ''}`} onClick={() => setLightMode(m => !m)}>
-            <span className={`switch-thumb ${lightMode ? 'on' : ''}`} />
-          </span>
-        </label>
         <label className="mode-switch" title="Toggle input mode">
           <span className="mode-switch-label">𝄞 Staff</span>
           <span className={`switch-track ${inputMode === 'staff' ? 'on' : ''}`} onClick={toggleMode}>
