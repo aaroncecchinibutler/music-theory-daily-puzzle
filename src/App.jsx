@@ -57,8 +57,17 @@ function ShareButton({ score, total, elapsed, stars, difficulty, date }) {
     ].join('\n')
   }
 
-  function handleShare() {
-    navigator.clipboard.writeText(buildShareText()).then(() => {
+  async function handleShare() {
+    const text = buildShareText()
+    if (navigator.share) {
+      try {
+        await navigator.share({ text })
+        return
+      } catch (e) {
+        if (e.name === 'AbortError') return
+      }
+    }
+    navigator.clipboard.writeText(text).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     })
