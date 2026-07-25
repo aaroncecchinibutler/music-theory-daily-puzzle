@@ -189,11 +189,12 @@ export default function App() {
     }
   }
 
-  function starsForTime(seconds) {
-    if (seconds < 60)  return 5
-    if (seconds < 120) return 4
-    if (seconds < 180) return 3
-    if (seconds < 240) return 2
+  function starsForTime(seconds, wrongCount) {
+    const adjusted = seconds + wrongCount * 30
+    if (adjusted < 60)  return 5
+    if (adjusted < 120) return 4
+    if (adjusted < 180) return 3
+    if (adjusted < 240) return 2
     return 1
   }
 
@@ -389,7 +390,7 @@ export default function App() {
         {checked && (
           <>
             <p className="score">{score} / {size * size} correct</p>
-            <p className="stars">{'★'.repeat(starsForTime(elapsed))}{'☆'.repeat(5 - starsForTime(elapsed))}</p>
+            <p className="stars">{'★'.repeat(starsForTime(elapsed, size * size - score))}{'☆'.repeat(5 - starsForTime(elapsed, size * size - score))}</p>
             <p className="time-result">{formatTime(elapsed)}</p>
             <button className="btn-ghost" onClick={() => {
               setChecked(false)
