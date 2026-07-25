@@ -105,6 +105,7 @@ export default function App() {
   // last arrow direction per cell: 'up' | 'down' (controls sharp vs flat spelling)
   const [staffDirections, setStaffDirections] = useState({})
   const [checked, setChecked] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [selected, setSelected] = useState(null)
   const [elapsed, setElapsed] = useState(0)
   const [timerStarted, setTimerStarted] = useState(false)
@@ -432,9 +433,21 @@ export default function App() {
         {cells}
       </div>
 
+      {showModal && checked && (
+        <div className="modal-backdrop" onClick={() => setShowModal(false)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <p className="modal-stars">{'★'.repeat(starsForTime(elapsed, size * size - score))}{'☆'.repeat(5 - starsForTime(elapsed, size * size - score))}</p>
+            <p className="modal-score">{score} / {size * size} correct</p>
+            <p className="modal-time">{formatTime(elapsed)}</p>
+            <ShareButton score={score} total={size * size} elapsed={elapsed} stars={starsForTime(elapsed, size * size - score)} difficulty={difficulty} date={date} />
+            <button className="btn-ghost" onClick={() => setShowModal(false)}>Done</button>
+          </div>
+        </div>
+      )}
+
       <div className="controls">
         {!checked && (
-          <button className="btn-primary" onClick={() => { clearInterval(timerRef.current); setChecked(true) }} disabled={!allFilled}>
+          <button className="btn-primary" onClick={() => { clearInterval(timerRef.current); setChecked(true); setShowModal(true) }} disabled={!allFilled}>
             {allFilled ? 'Check Answers' : `Fill all ${size * size} cells to check`}
           </button>
         )}
@@ -446,6 +459,7 @@ export default function App() {
             <ShareButton score={score} total={size * size} elapsed={elapsed} stars={starsForTime(elapsed, size * size - score)} difficulty={difficulty} date={date} />
             <button className="btn-ghost" onClick={() => {
               setChecked(false)
+              setShowModal(false)
               setGuesses({})
               setStaffIdxs({})
               setStaffDirections({})
