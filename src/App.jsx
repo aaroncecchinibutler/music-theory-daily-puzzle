@@ -38,6 +38,39 @@ function loadState(date, difficulty) {
   catch { return null }
 }
 
+function ShareButton({ score, total, elapsed, stars, difficulty, date }) {
+  const [copied, setCopied] = useState(false)
+
+  function buildShareText() {
+    const starStr = '★'.repeat(stars) + '☆'.repeat(5 - stars)
+    const m = Math.floor(elapsed / 60)
+    const s = elapsed % 60
+    const timeStr = `${m}:${s.toString().padStart(2, '0')}`
+    return [
+      `🎵 Music Theory Daily Puzzle`,
+      `${date} · ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}`,
+      ``,
+      `${score}/${total} correct · ${timeStr}`,
+      starStr,
+      ``,
+      `music-theory-daily-puzzle.vercel.app`,
+    ].join('\n')
+  }
+
+  function handleShare() {
+    navigator.clipboard.writeText(buildShareText()).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
+  return (
+    <button className="btn-share" onClick={handleShare}>
+      {copied ? '✓ Copied!' : '🔗 Share'}
+    </button>
+  )
+}
+
 export default function App() {
   const [difficulty, setDifficulty] = useState('easy')
   const [lightMode, setLightMode] = useState(false)
@@ -393,6 +426,7 @@ export default function App() {
             <p className="score">{score} / {size * size} correct</p>
             <p className="stars">{'★'.repeat(starsForTime(elapsed, size * size - score))}{'☆'.repeat(5 - starsForTime(elapsed, size * size - score))}</p>
             <p className="time-result">{formatTime(elapsed)}</p>
+            <ShareButton score={score} total={size * size} elapsed={elapsed} stars={starsForTime(elapsed, size * size - score)} difficulty={difficulty} date={date} />
             <button className="btn-ghost" onClick={() => {
               setChecked(false)
               setGuesses({})

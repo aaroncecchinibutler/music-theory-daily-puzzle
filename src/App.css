@@ -336,6 +336,19 @@ header h1 {
 }
 .btn-ghost:hover { border-color: var(--accent); color: var(--text); }
 
+.btn-share {
+  padding: 8px 24px;
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.btn-share:hover { background: var(--accent); color: #fff; }
+
 .score {
   font-size: 1.1rem;
   font-weight: 700;
