@@ -125,6 +125,7 @@ export default function App() {
   const [checked, setChecked] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const [streak, setStreak] = useState(() => loadStreak().count)
+  const [rulesOpen, setRulesOpen] = useState(() => !localStorage.getItem('mtdp-seen-rules'))
   const [selected, setSelected] = useState(null)
   const [elapsed, setElapsed] = useState(0)
   const [timerStarted, setTimerStarted] = useState(false)
@@ -461,7 +462,10 @@ export default function App() {
           : 'Click a cell to select it. Use ↑ ↓ to change the note by half step.'}
       </p>
 
-      <details className="how-to-play">
+      <details className="how-to-play" open={rulesOpen} onToggle={e => {
+        setRulesOpen(e.target.open)
+        localStorage.setItem('mtdp-seen-rules', '1')
+      }}>
         <summary>How to Play</summary>
         <ol>
           <li>Each cell must contain a note that belongs to <strong>both</strong> its row chord and its column chord.</li>
