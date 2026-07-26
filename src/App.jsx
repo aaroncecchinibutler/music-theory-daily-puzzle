@@ -181,8 +181,18 @@ export default function App() {
   function isFilled(key) {
     const v = guesses[key]
     if (v === undefined || v === null) return false
-    if (inputMode === 'text') return typeof v === 'string' ? !!v.trim() : true
+    if (inputMode === 'text') {
+      if (typeof v !== 'string' || !v.trim()) return false
+      return parseNote(v) !== null
+    }
     return true
+  }
+
+  function isInvalidInput(key) {
+    if (inputMode !== 'text') return false
+    const v = guesses[key]
+    if (!v || typeof v !== 'string' || !v.trim()) return false
+    return parseNote(v) === null
   }
 
   const allFilled = puzzle.rowChords.every((_, r) =>
@@ -345,7 +355,8 @@ export default function App() {
       const isSelected = selected === key
       const status = cellStatus(r, c)
       const filled = isFilled(key)
-      const className = `cell ${status ?? ''} ${isSelected ? 'selected' : ''} ${filled && !status ? 'filled' : ''}`
+      const invalid = isInvalidInput(key)
+      const className = `cell ${status ?? ''} ${isSelected ? 'selected' : ''} ${filled && !status ? 'filled' : ''} ${invalid ? 'invalid-input' : ''}`
 
       if (inputMode === 'text') {
         const value = guesses[key] ?? ''
