@@ -503,6 +503,7 @@ export default function App() {
             <p className="time-result">{formatTime(elapsed)}</p>
             <ShareButton score={score} total={size * size} elapsed={elapsed} stars={starsForTime(elapsed, size * size - score)} difficulty={difficulty} date={date} />
             <button className="btn-ghost" onClick={() => {
+              if (!window.confirm('Start over? Your answers will be cleared.')) return
               setChecked(false)
               setShowModal(false)
               setGuesses({})
