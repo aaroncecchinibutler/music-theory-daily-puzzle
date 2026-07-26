@@ -437,7 +437,12 @@ export default function App() {
       <div className="top-controls">
         <div className="difficulty-tabs">
           {DIFFICULTIES.map(d => (
-            <button key={d} className={`tab ${difficulty === d ? 'active' : ''}`} onClick={() => setDifficulty(d)}>
+            <button key={d} className={`tab ${difficulty === d ? 'active' : ''}`} onClick={() => {
+              if (d === difficulty) return
+              const hasProgress = Object.keys(guesses).length > 0
+              if (hasProgress && !window.confirm('Switch difficulty? Your current progress will be lost.')) return
+              setDifficulty(d)
+            }}>
               {d.charAt(0).toUpperCase() + d.slice(1)}
             </button>
           ))}
